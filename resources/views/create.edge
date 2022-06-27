@@ -1,0 +1,88 @@
+@layout('layouts/app')
+
+@section('content')
+@set('title', 'AdonisJS - About page')
+
+<div class="container">
+  <h1 class="title">
+    @if(isCreateUser)
+    <p> Create Customer </p>
+    @else
+    <p> Update Customer </p>
+    @end
+  </h1>
+  <p class="subtitle">
+  <form action="{{ route('/custommer') }}" method="POST">
+    @if(!isCreateUser)
+    <input hidden name="id" value={{ customer.id }}>
+    @end
+    <div class="field">
+      <label class="label">Name</label>
+      <div class="control">
+        <input class="input" name="name" type="text" placeholder="Name" value='{{ isCreateUser ? "" :
+          customer.name }}'>
+      </div>
+      @if(flashMessages.has('errors.name'))
+      <p class="help is-danger">{{ flashMessages.get('errors.name') }}</p>
+      @endif
+    </div>
+
+    <div class="field">
+      <label class="label">Username</label>
+      <div class="control">
+        <input class="input" name="user_name" type="text" placeholder="User name" value={{ isCreateUser ? "" :
+          customer.user_name }}>
+      </div>
+      @if(flashMessages.has('errors.user_name'))
+      <p class="help is-danger">{{ flashMessages.get('errors.user_name') }}</p>
+      @endif
+    </div>
+
+    <div class="field">
+      <label class="label">Email</label>
+      <div class="control">
+        <input class=" input" name="email" type="text" placeholder="User name" value={{ isCreateUser ? "" :
+          customer.email }}>
+      </div>
+      @if(flashMessages.has('errors.email'))
+      <p class="help is-danger">{{ flashMessages.get('errors.email') }}</p>
+      @endif
+      <div class="field">
+        <label class="label">Sex</label>
+        <div class="control">
+          <div class="select">
+            <select name="sex">
+              @if(isCreateUser || customer.sex)
+              <option value="true" selected>Male</option>
+              <option value="false">Female</option>
+              @else
+              <option value="true">Male</option>
+              <option value="false" selected>Female</option>
+              @end
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Age</label>
+        <div class="control">
+          <input name="age" class="input" max="50" min="18" placeholder="From 18 to 50" required type="number" value={{
+            isCreateUser ? 18 : customer.age }} />
+        </div>
+      </div>
+
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="button is-link" type="submit">{{
+            isCreateUser ? 'Create customer' : 'Update customer' }}</button>
+        </div>
+        <div class="control">
+          <button class="button is-link is-light" onclick="event.preventDefault(); location.href='/';">Cancel</button>
+        </div>
+      </div>
+  </form>
+  </p>
+</div>
+
+@endsection
